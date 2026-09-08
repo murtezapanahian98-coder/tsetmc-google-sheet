@@ -1,0 +1,28 @@
+name: Test TSETMC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test TSETMC
+        run: |
+          echo "Testing TSETMC..."
+          curl -I -L --max-time 30 "https://cdn.tsetmc.com"
+
+      - name: Test Market Watch API
+        run: |
+          curl -L --max-time 30 \
+            -A "Mozilla/5.0" \
+            -o response.txt \
+            "https://cdn.tsetmc.com/api/ClosingPrice/GetMarketWatch"
+
+          echo "Response size:"
+          wc -c response.txt
+
+          echo "First 1000 characters:"
+          head -c 1000 response.txt
+          echo
