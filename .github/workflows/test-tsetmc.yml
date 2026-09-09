@@ -1,4 +1,4 @@
-name: Test Alternative API
+name: Test Daily TSETMC
 
 on:
   workflow_dispatch:
@@ -8,13 +8,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test alternative API
+      - name: Get daily market data
         run: |
-          echo "Testing alternative API..."
+          DATE=$(date -u +"%Y%m%d")
+          echo "DATE=$DATE"
+
+          URL="https://cdn.tsetmc.com/api/ClosingPrice/GetInstrmentsHistoryInDay/$DATE"
+
+          echo "Requesting:"
+          echo "$URL"
+
           curl -L --max-time 30 \
             -A "Mozilla/5.0" \
             -o response.json \
-            "https://api.azhir365.com/v1/bourse/?token=e193b1613082a46116b95f4e12b6cedd&type=close_price&name=فملی"
+            "$URL"
 
-          echo "Response:"
-          cat response.json
+          echo "File size:"
+          wc -c response.json
+
+          echo "First 2000 characters:"
+          head -c 2000 response.json
+          echo
