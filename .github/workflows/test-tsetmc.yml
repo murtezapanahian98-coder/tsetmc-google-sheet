@@ -1,4 +1,4 @@
-name: Test TSETMC
+name: Test Alternative API
 
 on:
   workflow_dispatch:
@@ -8,21 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test TSETMC
+      - name: Test alternative API
         run: |
-          echo "Testing TSETMC..."
-          curl -I -L --max-time 30 "https://cdn.tsetmc.com"
-
-      - name: Test Market Watch API
-        run: |
+          echo "Testing alternative API..."
           curl -L --max-time 30 \
             -A "Mozilla/5.0" \
-            -o response.txt \
-            "https://cdn.tsetmc.com/api/ClosingPrice/GetMarketWatch"
+            -o response.json \
+            "https://api.azhir365.com/v1/bourse/?token=e193b1613082a46116b95f4e12b6cedd&type=close_price&name=فملی"
 
-          echo "Response size:"
-          wc -c response.txt
-
-          echo "First 1000 characters:"
-          head -c 1000 response.txt
-          echo
+          echo "Response:"
+          cat response.json
